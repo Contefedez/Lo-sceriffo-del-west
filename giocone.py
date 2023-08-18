@@ -18,7 +18,7 @@ start = True
 sfondo_menu = pygame.image.load("home.png").convert()
 sfondo_menu = pygame.transform.smoothscale(sfondo_menu, (1000,500))
 
-
+#audio
 
 
 #testi
