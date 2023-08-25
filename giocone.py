@@ -42,6 +42,9 @@ canzone = pygame.image.load("canzone.png").convert()
 indietro = pygame.image.load("back.png").convert()
 
 #audio
+canzone1 = pygame.mixer.Sound("canzone1.mp3")
+canzone2 = pygame.mixer.Sound("canzone2.mp3")
+sparo = pygame.mixer.Sound("shot.mp3")
 
 #classi
 class Button():
@@ -92,8 +95,9 @@ def play():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN and colpi > 0 and tempo < round_duration:
+            if event.type == pygame.MOUSEBUTTONDOWN and colpi > 0 and tempo < durata_round:
                 if event.button == 1:  # Tasto sinistro del mouse
+                    sparo.play()
                     for target in bersagli:
                         target_x, target_y = target
                         mouse_x, mouse_y = pygame.mouse.get_pos()
@@ -132,41 +136,42 @@ def play():
     
 def options():
     while True:
-        OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
-
+        mouse_pos = pygame.mouse.get_pos()
         screen.fill("bianco")
-        
-        OPTIONS_BACK = Button( pos=(640, 460), text_input="BACK")
-
-        
-        OPTIONS_BACK.update(screen)
+        back_opzioni = Button( pos=(840, 460), text_input="BACK")
+        back_opzioni.update(screen)
+        canzone_1 = Button(pos = (500,400), text = "S-1")
+        canzone_2 = Button(pos = (700,400), text = "S-2")
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if OPTIONS_BACK.input(OPTIONS_MOUSE_POS):
+                if back_opzioni.input(mouse_pos):
                     main_menu()
+                if canzone_1.input(mouse_pos):
+                    canzone1.play(0,70)
+                if canzone_2.input(mouse_pos):
+                    canzone2.play(0,70)
 
         pygame.display.update()
 
 def main_menu():
     while True:
         screen.blit(sfondo_menu, (0, 0))
-
         mouse_pos = pygame.mouse.get_pos()
-        PLAY_BUTTON = Button( pos=(640, 250), text_input="PLAY")
-        OPTIONS_BUTTON = Button( pos=(640, 400), text_input="OPTIONS")
+        play = Button( pos=(640, 250), text_input="PLAY")
+        options = Button( pos=(640, 400), text_input="OPTIONS")
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if PLAY_BUTTON.input(MENU_MOUSE_POS):
+                if play.input(mouse_pos):
                     play()
-                if OPTIONS_BUTTON.input(MENU_MOUSE_POS):
+                if options.input(mouse_pos):
                     options()
                 
 
