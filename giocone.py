@@ -76,7 +76,13 @@ def spawn():
         y = randint(100, altezza - raggio)
         bersagli.append((x,y,z))
         
-         
+# def mostra_score():
+#     tempo = int((pygame.time.get_ticks() - tempo_inizio) / 1000)
+#     score = test_font.render(f"Punteggio:{tempo}", False, (64,64,64))
+#     rettangolo_score = score.get_rect(center= (400,50))
+#     screen.blit(score, rettangolo_score)
+#     return tempo
+
 def play():
     while True:
         tempo_corrente = pygame.time.get_ticks()
