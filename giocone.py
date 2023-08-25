@@ -149,7 +149,7 @@ def main_menu():
     while True:
         screen.blit(sfondo_menu, (0, 0))
 
-        MENU_MOUSE_POS = pygame.mouse.get_pos()
+        mouse_pos = pygame.mouse.get_pos()
         PLAY_BUTTON = Button( pos=(640, 250), text_input="PLAY")
         OPTIONS_BUTTON = Button( pos=(640, 400), text_input="OPTIONS")
         
