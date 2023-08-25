@@ -120,6 +120,12 @@ def play():
         if len(bersagli) < 5 and tempo < durata_round:
             spawn()
 
+        for bersaglioso in bersagli:
+            if bersaglioso[2] == 1:
+                screen.blit(bersaglio,(bersaglioso[0],bersaglioso[1]))
+            if bersaglioso[2] == 2:
+                screen.blit(bandito,(bersaglioso[0],bersaglioso[1]))
+
         score_text = font.render(f"Score: {punteggio}", True, bianco)
         screen.blit(score_text, (125, 10))
 
@@ -137,7 +143,7 @@ def play():
 def options():
     while True:
         mouse_pos = pygame.mouse.get_pos()
-        screen.fill("bianco")
+        screen.blit(sfondo_menu,(0,0))
         back_opzioni = Button( pos=(840, 460), text_input="BACK")
         back_opzioni.update(screen)
         canzone_1 = Button(pos = (500,400), text = "S-1")
