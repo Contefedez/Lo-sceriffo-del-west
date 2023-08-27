@@ -23,7 +23,6 @@ max_colpi = 10
 
 #bersagli
 raggio = 30
-bersagli = []
 bersaglio = pygame.image.load("bersaglio.png").convert()
 rettangolo_bersaglio = bersaglio.get_rect(center = (30,30))
 bandito = pygame.image.load("bandito.png").convert()
@@ -40,8 +39,6 @@ sfondo_game = pygame.image.load("sfondo.png").convert()
 sfondo_game = pygame.transform.smoothscale(sfondo_game, (1000,500))
 inizio = pygame.image.load("start.png").convert()
 
-
-
 #audio
 canzone1 = pygame.mixer.Sound("canzone1.mp3")
 canzone2 = pygame.mixer.Sound("canzone2.mp3")
@@ -49,14 +46,14 @@ sparo = pygame.mixer.Sound("shot.mp3")
 
 #classi
 class Button():
-	def __init__(self, image, pos, font, text_input, base_color, hovering_color):
+	def __init__(self, image, pos, font, text_input, colore, secondocolore):
 		self.image = image
 		self.x_pos = pos[0]
 		self.y_pos = pos[1]
 		self.font = font
-		self.base_color, self.hovering_color = base_color, hovering_color
+		self.colore, self.secondocolore = colore, secondocolore
 		self.text_input = text_input
-		self.text = self.font.render(self.text_input, True, self.base_color)
+		self.text = self.font.render(self.text_input, True, self.colore)
 		if self.image is None:
 			self.image = self.text
 		self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
@@ -74,15 +71,15 @@ class Button():
 
 	def changeColor(self, position):
 		if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-			self.text = self.font.render(self.text_input, True, self.hovering_color)
+			self.text = self.font.render(self.text_input, True, self.secondocolore)
 		else:
-			self.text = self.font.render(self.text_input, True, self.base_color)
+			self.text = self.font.render(self.text_input, True, self.colore)
 
 
 def get_font(size): 
     return pygame.font.Font("docktrin.ttf", size)
 
-def spawn():
+def spawn(bersagli):
     z = randint(0,2)
     if z == 1:
         x = randint(raggio, larghezza - raggio)
@@ -100,6 +97,7 @@ def play():
     tempo = (tempo_corrente - inizio_round) / 1000
     punteggio = 0
     colpi = 10
+    bersagli = []
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -113,7 +111,7 @@ def play():
                     distance = ((target_x - mouse_x) ** 2 + (target_y - mouse_y) ** 2) ** 0.5
                     if distance <= raggio:
                         bersagli.remove(bersa)
-                        spawn()
+                        spawn(bersagli)
                         punteggio += 1
                         colpi += 2
                     else:  
@@ -122,7 +120,7 @@ def play():
                        main_menu()
     
     if len(bersagli) < 5 and tempo < durata_round:
-        spawn()
+        spawn(bersagli)
 
     for bersaglioso in bersagli:
         if bersaglioso[2] == 1:
@@ -140,7 +138,6 @@ def play():
     
     tempo_rimasto = durata_round - tempo
     while tempo_rimasto > 0:
-        tempo_rimasto = durata_round - tempo
         time_text = font.render(f"Tempo Rimasto: {tempo_rimasto:.1f}", True, bianco)
         screen.blit(time_text, (530, 10))
     main_menu()
@@ -151,10 +148,10 @@ def options():
     while True:
         mouse_pos = pygame.mouse.get_pos()
         screen.blit(sfondo_menu,(0,0))
-        back_opzioni = Button( image=None, pos=(420, 325), font=get_font(75),text_input="BACK", base_color="White", hovering_color="Green")
+        back_opzioni = Button( image=None, pos=(420, 325), font=get_font(75),text_input="BACK", colore="White", secondocolore="Green")
         back_opzioni.update(screen)
-        canzone_1 = Button( image=None, pos = (270,200), font=get_font(75),text_input = "S-1", base_color="White", hovering_color="Green" )
-        canzone_2 = Button(image=None,pos = (450,200),font=get_font(75), text_input = "S-2", base_color="White", hovering_color="Green")
+        canzone_1 = Button( image=None, pos = (270,200), font=get_font(75),text_input = "S-1", colore="White", secondocolore="Green" )
+        canzone_2 = Button(image=None,pos = (450,200),font=get_font(75), text_input = "S-2", colore="White", secondocolore="Green")
         screen.blit(canzoni,rettangolo_canzoni)
         back_opzioni.changeColor(mouse_pos)
         back_opzioni.update(screen)
@@ -183,8 +180,8 @@ def main_menu():
         titolo_gioco = get_font(80).render("LO SCERIFFO DEL WEST", False, bianco)
         rettangolo_titolo = titolo_gioco.get_rect(center = (380,100))
         mouse_pos = pygame.mouse.get_pos()
-        play_b = Button( image=None,pos=(340, 200),font=get_font(60), text_input="PLAY",base_color="White", hovering_color="Green")
-        options_b = Button( image=None,pos=(340, 300),font=get_font(60), text_input="OPTIONS",base_color="White", hovering_color="Green")
+        play_b = Button( image=None,pos=(340, 200),font=get_font(60), text_input="PLAY",colore="White", secondocolore="Green")
+        options_b = Button( image=None,pos=(340, 300),font=get_font(60), text_input="OPTIONS",colore="White", secondocolore="Green")
         screen.blit(titolo_gioco,rettangolo_titolo)
         for button in [play_b, options_b]:
             button.changeColor(mouse_pos)
